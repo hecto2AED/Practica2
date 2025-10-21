@@ -152,16 +152,21 @@ p2
 * Carga el fichero ``weatherAUS.RData`` utilizando lo aprendido en la práctica 1.
 * Crea un objeto ggplot denominado ``grafico1`` en el que esté definido el conjunto de datos ``ds`` alojado en el fichero ``weatherAUS.RData`` y un *aesthetics* en el que en el eje $x$ esté definida la variable ``MinTemp`` y en el eje $y$ esté definida la variable ``MaxTemp``.
 * Añade una capa que defina el objeto geométrico necesario para  construir un gráfico de dispersión de las variables ``MinTemp`` y ``MaxTemp``.
+
 * Genera ahora el mismo gráfico y almacénalo en ``grafico2`` pero define el *aesthetics* para visualizar las variables ``MinTemp`` y ``MaxTemp`` en los ejes de la gráfica y la variable categórica ``RainTomorrow`` como el color. A partir del objeto ``grafico2``, representa un gráfico de dispersión en el que se muestren los puntos con el color del punto correspondiente a la variable ``RainTomorrow``.
+
 * Añade a ``grafico2`` una capa para incluir un título con **ggtitle()** y almacénalo en ``grafico3``.
 * Almacena en formato **pdf** el gráfico resultante en un fichero denominado ``Ejercicio1.pdf``.
 
 ```{r Solucion ejercicio 1}
+rm(list=ls())
 load("data/weatherAUS.RData")
 
 grafico1 <- ggplot(ds, aes(x= MinTemp, y = MaxTemp))
-grafico1.1 <- grafico1 + geom_point()
-grafico1.1
+grafico1 <- grafico1 + geom_point()
+grafico2 <- ggplot(data = ds, aes(x = MinTemp, y= MaxTemp, color= RainTomorrow))
+grafico2 <- grafico2 + geom_point()
+grafico3 <- grafico2 + ggtitle("Weather")
 
 ggsave('figs/Ejercicio1.pdf')
 ```
@@ -169,15 +174,34 @@ ggsave('figs/Ejercicio1.pdf')
 ### **Ejercicio 2**
 
 * Utilizando ggplot haz un grafico de dispersión en el que representes las variables ``Temp9am`` y ``Pressure9am`` en los ejes $x$ e $y$ respectivamente.
+
 * Modifica el gráfico anterior para incluir información categórica proporcionada por la variable ``RainToday`` con la forma del punto.
+
 * Modifica el gráfico anterior para incluir información categórica proporcionada por la variable ``RainToday`` con el color del punto. ¿Con qué representación (color o forma) se observa mejor la información que introduce la variable ``RainToday``?
+
 * Añade títulos explicativos al gráfico anterior (debe aparece un título, subtítulo, leyendas e información de las variables representadas en los ejes). 
 * Almacena en formato **pdf** el gráfico resultante en un fichero denominado ``Ejercicio2.pdf``.
 
 ```{r Solucion ejercicio 2}
+rm(list=ls())
+load("data/weatherAUS.RData")
+
+mañana_grf <- ggplot(ds, aes(x= Temp9am, y = Pressure9am, shape = RainToday, color= RainToday)) + geom_point()
+mañana_grf <- mañana_grf + labs(
+  title = "Weather 9am",
+  subtitle = "Relation between Preassure and Temperatura at 9am",
+  x = "Preassure at 9am",
+  y = "Temperature at 9am",
+  caption = "Data extracted from WeatherAUS dataset",
+  colour= "Rained Today?",
+  shape= "Rained Today?"
+)
+mañana_grf
 
 ggsave('figs/Ejercicio2.pdf')
 ```
+Con color se observa mejor que con forma la variable RainToday.
+
 
 ### **Ejercicio 3**
 
