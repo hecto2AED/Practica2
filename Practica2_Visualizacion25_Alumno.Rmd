@@ -394,7 +394,17 @@ El fichero ``iceRiver.RData`` contiene información del caudal de dos ríos isla
 rm(list = ls())
 load("data/iceRiver.RData")
 df_rio <- ice.river.df
-rios <- ggplot(df_rio, )
+
+# Aquí hacemos unas capas y así al solapar ambas vemos el flow de ambos rios
+rios <- ggplot(df_rio, aes(x = time)) + geom_line(aes(y = flow.vat, color = "Río Vat")) + geom_line(aes(y = flow.jok, color = "Río Jok")) + scale_color_manual(name = "Ríos", values = c("Río Vat" = "red", "Río Jok" = "blue")) + labs(
+    title = "Caudal ríos Vat y Jok",
+    subtitle = "Evolución del caudal a lo largo del tiempo",
+    x = "Tiempo",
+    y = "Caudal"
+  )
+
+rios
+ggsave('figs/Ejercicio6.pdf') # se almacena el último gráfico generado
 
 ```
 
