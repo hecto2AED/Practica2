@@ -207,17 +207,39 @@ Con color se observa mejor que con forma la variable RainToday.
 
 * Carga el fichero ``iris.tidy.Rdata`` utilizando lo aprendido en la práctica 1.
 * Utiliza la función **str()** para ver qué variables contiene el dataset.
+
 * Crea un objeto ggplot denominado ``iris.grafico1`` en el que esté definido el conjunto de datos ``iris.tidy`` alojado en el fichero ``iris.tidy.RData`` y un *aesthetics* en el que en el eje $x$ esté definida la variable ``Species`` y en el eje $y$ esté definida la variable ``Value``.
+
 * Añade una capa que defina el objeto geométrico necesario para  construir un gráfico de dispersión de las variables ``Species`` y ``Value``.
+
 * Modifica el *aesthetics* de ``iris.grafico1`` para visualizar  la variable categórica `` Part`` y almacénalo en ``iris.grafico2``. A partir del objeto ``iris.grafico2``, representa un gráfico de dispersión en el que se muestren los puntos dados por las variables ``Species`` y ``Value``, y el color del punto se corresponda con el valor de la variable ``Part``.
+
 * Incluye información de la variable ``Measure`` haciendo dos gráficos de dispersión (dispuestos en filas) con **facet_grid()**, como en el apartado de introducción, para los dos valores que toma la variable ``Measure``. Prueba a cambiar la disposición de los gráficos para que sea en columnas ¿Qué disposición, en filas o en columnas, permite comparar mejor los valores de las dos variables?
+
 * Cambia ahora la capa **geom_point()** del gráfico anterior por la capa  **geom_jitter()**. ¿Qué diferencia observas?
 * Almacena en formato **pdf** el gráfico resultante en un fichero denominado ``Ejercicio3.pdf``.
 
 ```{r Solucion ejercicio 3}
+rm(list=ls())
+load("data/iris_tidy.Rdata")
+df <- iris.tidy
+str(df)
+
+iris.grafico1 <- ggplot(df, aes(x= Species, y= Value))
+iris.grafico1 <- iris.grafico1 + geom_point()
+
+iris.grafico2 <- ggplot(df, aes(x= Species, y= Value, color = Part))
+iris.grafico2 <- iris.grafico2 + geom_point() + facet_grid(cols = vars(Measure))
+iris.grafico3 <- iris.grafico2 + geom_point() + facet_grid(rows = vars(Measure))
+iris.grafico3; iris.grafico2
+
+iris.grafico4 <- iris.grafico2 + geom_jitter()
+iris.grafico4
 
 ggsave('figs/Ejercicio3.pdf') # se almacena el último gráfico generado
 ```
+La disposición en columnas permite mejorar los valores de las variables.
+Con geom_jitter() hya mayor dispersión de variables. Este desplazamiento separa los puntos que originalmente estaban superpuestos, permitiéndote ver la densidad de los datos en esa ubicación. No altera la posición central de los datos, solo los dispersa ligeramente.
 
 ## Gráficos de línea con **ggplot2**
 
