@@ -314,13 +314,28 @@ ggplot(data=Dosis.Medicina2, aes(x=Dosis, y=Efectividad, group=Complemento)) +
 
 * Carga el fichero ``Ejercicio4_Data.Rdata``. Examina las variables que tiene dicho dataset.
 * Representa un gráfico de puntos, en el que se muestre la fecha en el eje $x$ y las ventas en el eje $y$. Queremos que los datos de cada fabricante sean de un color distinto. ¿Es este gráfico válido para evaluar la evolución de las ventas de cada fabricante?
+
 * Representa un gráfico como el anterior en el que se muestre la línea que une los puntos que antes has representado.
+
 * Modifica el gráfico anterior para que la tendencia de cada fabricante este trazada con un tipo de línea diferente.
+
 * Añade el siguiente título al gráfico *"Ventas mensuales de diferentes compañías tecnológicas"*.
 * Almacena en formato **pdf** el gráfico resultante en un fichero denominado ``Ejercicio4.pdf``.
 
 ```{r Solucion ejercicio 4}
+rm(list = ls())
+load("data/Ejercicio4_Data.Rdata")
+str(DatosEjer4)
+ejer4 <- DatosEjer4
 
+grf1 <- ggplot(ejer4, aes(x= Fecha, y= Ventas, color= Fabricante)) + geom_point()
+# El gráfico es válido para evaluar la evolción de las ventas de cada fabricante, podemos diferenciarlos bien.
+
+grf2 <- ggplot(ejer4, aes(x= Fecha, y= Ventas, color= Fabricante)) + geom_point() + geom_line(aes(linetype = Fabricante)) + scale_color_manual(values = c("Microsoft" = "green","Apple" = "red")) + labs(
+  title = "Ventas mensuales de diferentes compañías tecnológicas",
+)
+
+ggsave('figs/Ejercicio4.pdf') # se almacena el último gráfico generado
 ```
 
 ## Barras de error con **ggplot2**
@@ -376,7 +391,10 @@ El fichero ``iceRiver.RData`` contiene información del caudal de dos ríos isla
   * Almacena en formato **pdf** el gráfico resultante en un fichero denominado ``Ejercicio5.pdf``.
 
 ```{r Solucion ejercicio 6 }
-
+rm(list = ls())
+load("data/iceRiver.RData")
+df_rio <- ice.river.df
+rios <- ggplot(df_rio, )
 
 ```
 
