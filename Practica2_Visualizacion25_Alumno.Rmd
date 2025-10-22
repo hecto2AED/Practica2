@@ -372,13 +372,32 @@ p
 Añadir barras de error a un gráfico de línea.
 
 * Carga el fichero ``Experimento.Rdata``. Examina las variables que tiene dicho dataset.
+
 * Representa un gráfico de puntos, en el que se muestre la ``Dosis`` en el eje $x$ y la ``Altura`` en el eje $y$. Queremos que los datos de cada ``Complemento`` se representen en una línea diferente con diferentes trazos. Hazlo incluyendo las opciones de tipo de línea y forma del punto dentro del **aes()**  de la capa **ggplot**.
+
 * Crea otro gráfico añadiendo al gráfico anterior barras de error en cada punto. El error viene dado por la variable ``Error_Altura``.
+
 * Crea otro gráfico, como el anterior (**idéntico**), pero en este caso no puedes incluir el tipo de línea y el tipo de punto en aes() de la capa ggplot. Además queremos que la paleta de colores sea en tonos de rojos (`scale_color_brewer`).
 * Almacena en formato **pdf** el gráfico resultante en un fichero denominado ``Ejercicio5.pdf``.
 
 ```{r Solucion ejercicio 5}
+rm(list=ls())
+load("data/Experimento.Rdata")
 
+grf1 <- ggplot(Experimento, aes(x= Dosis, y= Altura, color= Complemento, linetype = Complemento, shape= Complemento))
+grf1 <- grf1 + geom_point() + geom_line()
+
+grf2 <- grf1 + geom_errorbar(aes(ymin = Altura - Error_Altura, ymax = Altura + Error_Altura, width = 0.1))
+
+
+grf3 <- ggplot(Experimento, aes(x = Dosis, y = Altura, color = Complemento)) + geom_point(size = 3, shape = 16) + geom_line(linetype = "dashed") + geom_errorbar(aes(ymin = Altura - Error_Altura, ymax = Altura + Error_Altura), width = 0.2) + scale_color_brewer(palette = "Reds") +labs(
+    title = "Altura según dosis y tipo de complemento (paleta roja)",
+    x = "Dosis",
+    y = "Altura (cm)"
+  )
+
+
+ggsave('figs/Ejercicio5.pdf') # se almacena el último gráfico generado
 
 ```
 
@@ -534,16 +553,67 @@ ggplot(data=dataset_hist1, aes(x=AGE)) +
 ### **Ejercicio 8**
 
 * Descarga de la url  "http://assets.datacamp.com/blog_assets/chol.txt" el dataset de Datacamp que utilizarás para este ejercicio y cárgalo en un datafrae .
+
 * Representa el histograma de la variable ``HEIGHT`` del dataframe cargado del fichero anterior.
+
 * Añade título ("Histograma de la variable Altura"), una etiqueta en el eje $x$ ("Altura (cm)") y una etiqueta en el eje $y$ ("Frecuencia").
+
 * Ajusta el rango de representación entre 155 y 195, además fuerza que el histograma tenga 20 *bins*.(usa parámetro `breaks`)
+
 * Haz que las barras del histograma sean de color azul con una grado de transparencia del 50% y el contorno de color rojo.
+
 * Añade la curva de distribución estimada de color verde.
 * Representa el mismo histograma del apartado anterior para cada valor de la variable ``MORT``, recuerda utilizar la función **facet_grid()**.
+
 * Almacena en formato **pdf** el gráfico resultante en un fichero denominado ``Ejercicio8.pdf``.
 
 ```{r Solucion ejercicio 8}
-# 
+rm(list = ls())
+
+
+url <- "http://assets.datacamp.com/blog_assets/chol.txt"
+datos <- read.table(url, header = TRUE)
+
+grf1 <- ggplot(datos, aes(x=HEIGHT)) + geom_histogram(fill="blue",color="red",alpha=0.5,breaks=seq(155,195, length.out=21)) + labs(
+    title = "Histograma de la variable Altura",
+    x = "Altura (cm)",
+    y = "Frecuencia"
+)
+grf1
+grf2 <- ggplot(datos, aes(x = HEIGHT)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    fill = "blue",
+    color = "red",
+    alpha = 0.5,
+    breaks = seq(155, 195, length.out = 21)
+  ) +
+  geom_density(color = "green", size = 1) +
+  labs(
+    title = "Histograma de la variable Altura",
+    x = "Altura (cm)",
+    y = "Frecuencia"
+  )
+grf2
+grf3 <- ggplot(datos, aes(x = HEIGHT)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    fill = "blue",
+    color = "red",
+    alpha = 0.5,
+    breaks = seq(155, 195, length.out = 21)
+  ) +
+  geom_density(color = "green", size = 1) +
+  labs(
+    title = "Histograma de la variable Altura por MORT",
+    x = "Altura (cm)",
+    y = "Frecuencia"
+  ) +
+  facet_grid(. ~ MORT)   
+grf3
+
+
+ggsave('figs/Ejercicio8.pdf') # se almacena el último gráfico generado
 
 ```
 
